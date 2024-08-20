@@ -1,6 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 
+const userRouter = require("./routes/api/users");
+const globalErrorHandlerMiddleware = require("./middlewares/globalErrorHandlerMiddleware");
+const errorHandler = require("./utils/errorHandler");
+
 const app = express();
 
 app.use(morgan("dev"));
@@ -9,8 +13,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use("/api/v1/users", userRouter);
+
+app.all("*", (req, res, next) => {
+  next(new errorHandler(`Can't find ${req.originalUrl} on this server`, 404));
 });
+
+// Global Error Handling Middleware
+app.use(globalErrorHandlerMiddleware);
 
 module.exports = app;
