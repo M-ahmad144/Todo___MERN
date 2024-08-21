@@ -7,6 +7,8 @@ const errorHandler = require("./utils/errorHandler");
 
 const app = express();
 
+app.use(express.json());
+
 app.use(morgan("dev"));
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

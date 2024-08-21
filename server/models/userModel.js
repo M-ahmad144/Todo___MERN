@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const argon2 = require("argon2");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -10,7 +11,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please enter an email address"],
-    unique: true,
+    unique: [true, "Email already exists"],
     lowercase: true,
     validate: [validator.isEmail, "Please enter a valid email"],
   },
@@ -43,5 +44,15 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
+userSchema.methods.generateToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_COOKIE_EXPIRES_IN,
+  });
+};
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await argon2.verify(this.password, candidatePassword);
+};
 
 module.exports = mongoose.model("User", userSchema);

@@ -14,62 +14,39 @@ const handleDuplicateFieldsDB = (err) => {
 };
 
 const handleValidationErrorDB = (err) => {
-  let errors = Object.values(err.errors).map((val) => val.message);
-  const msg = `Invalid field value: ${errors.join(". ")}`;
+  const errors = Object.values(err.errors).map((val) => val.message);
+  const msg = `Invalid input data. ${errors.join(". ")}`;
   return new errorHandler(msg, 400);
 };
 
 const handleJWTErr = () =>
-  new errorHandler("The user belonging to this account no longer exists ", 401);
+  new errorHandler("Invalid token. Please log in again.", 401);
 
 const handleTokenExpiredError = () =>
-  new errorHandler("Token expired , please login again", 401);
-
+  new errorHandler("Your token has expired! Please log in again.", 401);
 const sendErrorDev = (err, req, res) => {
-  // API
-  if (req.originalUrl.startsWith("/api")) {
-    res.status(err.statusCode || 500).json({
-      status: err.status || "error",
-      error: err,
-      message: err.message || "Internal Server Error",
-      stack: err.stack || "No stack trace available",
-    });
-  } else {
-    // RENDERED WEBSITE
-    res.status(err.statusCode || 500).render("error", {
-      title: "Something went wrong",
-      msg: err.message || "An error occurred",
-    });
-  }
+  res.status(err.statusCode || 500).json({
+    status: err.status || "error",
+    error: err,
+    message: err.message || "Internal Server Error",
+    stack: err.stack || "No stack trace available",
+  });
 };
 
 const sendErrorProd = (err, req, res) => {
   // API
-  if (req.originalUrl.startsWith("/api")) {
-    if (err.isOperational) {
-      return res.status(err.statusCode).json({
-        status: err.status || "error",
-        message: err.message || "An error occurred",
-      });
-    }
-    // Log the error for the developer
-    console.error("ERROR:", err);
-    return res.status(500).json({
-      status: "error",
-      message: "Something went wrong, please try again later.",
-    });
-  }
-  // RENDERED WEBSITE
   if (err.isOperational) {
-    return res.status(err.statusCode).render("error", {
-      title: "Something went wrong",
-      msg: err.message,
+    return res.status(err.statusCode).json({
+      status: err.status || "error",
+      message: err.message || "An error occurred",
     });
   }
+
+  // Log the error for the developer
   console.error("ERROR:", err);
-  return res.status(500).render("error", {
-    title: "Something went wrong",
-    msg: err.message,
+  return res.status(500).json({
+    status: "error",
+    message: "Something went wrong, please try again later.",
   });
 };
 
@@ -81,10 +58,11 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === "production") {
     let error = { ...err };
-    error.message = err.message;
-    if (error.name === "CastError") error = handleCastErrorDB(err);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(err);
-    if (error.name === "ValidationError") error = handleValidationErrorDB(err);
+    error.message = err.message || "Internal Server Error";
+    if (error.name === "CastError") error = handleCastErrorDB(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error.name === "ValidationError")
+      error = handleValidationErrorDB(error);
     if (error.name === "JsonWebTokenError") error = handleJWTErr();
     if (error.name === "TokenExpiredError") error = handleTokenExpiredError();
     sendErrorProd(error, req, res);
