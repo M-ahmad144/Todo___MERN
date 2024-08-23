@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-
+const cors = require("cors");
 const userRouter = require("./routes/api/users");
 const globalErrorHandlerMiddleware = require("./middlewares/globalErrorHandlerMiddleware");
 const errorHandler = require("./utils/errorHandler");
@@ -8,6 +8,8 @@ const errorHandler = require("./utils/errorHandler");
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use(morgan("dev"));
 app.use((req, res, next) => {
