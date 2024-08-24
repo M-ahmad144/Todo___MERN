@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/user", userRouter);
 
 app.all("*", (req, res, next) => {
   next(new errorHandler(`Can't find ${req.originalUrl} on this server`, 404));

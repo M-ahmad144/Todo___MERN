@@ -1,42 +1,52 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
+import { signup } from "../store/user/userAction";
+
+import {
+  selectUserLoading,
+  selectUserError,
+} from "../store/user/userSelectors";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     passwordConfirm: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const loading = useSelector(selectUserLoading);
+  const error = useSelector(selectUserError);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    if (formData.password !== formData.passwordConfirm) {
-      toast.error("Passwords do not match");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Replace with your actual API call
-      // await signup(formData);
-      toast.success("Signup successful!");
-    } catch (err) {
-      toast.error("Signup failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    dispatch(signup(formData))
+      .unwrap()
+      .then(() => {
+        navigate("/login");
+        toast.success("Signup successful!");
+        // Clear the form
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          passwordConfirm: "",
+        });
+      })
+      .catch(() => {
+        toast.error(error || "Something went wrong. Please try again.");
+      });
   };
 
   return (
@@ -64,9 +74,9 @@ export default function Signup() {
               Username
             </label>
             <input
-              id="username"
+              id="name"
               type="text"
-              value={formData.username}
+              value={formData.name}
               onChange={handleChange}
               className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
               placeholder="Enter your username"
@@ -131,7 +141,7 @@ export default function Signup() {
               disabled={loading}
             >
               {loading ? (
-                <TailSpin height={24} width={24} color="#ffffff" />
+                <TailSpin height={24} width={24} color="#F8F8F8" />
               ) : (
                 "Sign up"
               )}

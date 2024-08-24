@@ -1,6 +1,6 @@
 // src/features/user/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { signup, login } from "./userActions";
+import { signup, login, logout, getUser } from "./userAction";
 
 const initialState = {
   isAuthenticated: false,
@@ -12,12 +12,7 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(signup.pending, (state) => {
@@ -28,6 +23,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         state.user = action.payload;
+        state.error = null;
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = false;
@@ -41,14 +37,35 @@ const userSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         state.user = action.payload;
+        state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
-
-export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

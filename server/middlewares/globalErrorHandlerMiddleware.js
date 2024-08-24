@@ -25,6 +25,7 @@ const handleJWTErr = () =>
 const handleTokenExpiredError = () =>
   new errorHandler("Your token has expired! Please log in again.", 401);
 const sendErrorDev = (err, req, res) => {
+  console.log(err);
   res.status(err.statusCode || 500).json({
     status: err.status || "error",
     error: err,
@@ -42,8 +43,6 @@ const sendErrorProd = (err, req, res) => {
     });
   }
 
-  // Log the error for the developer
-  console.error("ERROR:", err);
   return res.status(500).json({
     status: "error",
     message: "Something went wrong, please try again later.",
