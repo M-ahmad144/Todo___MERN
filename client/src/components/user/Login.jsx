@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
-import { login } from "../store/user/userAction";
+import { login } from "../../store/user/userAction";
 import {
   selectUserLoading,
   selectUserError,
-} from "../store/user/userSelectors";
+} from "../../store/user/userSelectors";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -44,7 +44,10 @@ export default function Login() {
   };
 
   return (
-    <section className="flex lg:flex-row flex-col bg-gray-900 h-screen text-white">
+    <section
+      className="flex lg:flex-row flex-col h-screen text-white"
+      style={{ backgroundColor: "#233142" }}
+    >
       {/* Left column container with background */}
       <div className="flex-shrink-0 lg:w-6/12 xl:w-6/12">
         <img

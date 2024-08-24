@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
-import { signup } from "../store/user/userAction";
+import { signup } from "../../store/user/userAction";
 
 import {
   selectUserLoading,
   selectUserError,
-} from "../store/user/userSelectors";
+} from "../../store/user/userSelectors";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -50,13 +50,18 @@ export default function Signup() {
   };
 
   return (
-    <section className="flex lg:flex-row flex-col bg-gray-900 h-screen text-white">
+    <section
+      className="flex lg:flex-row flex-col h-screen text-white"
+      style={{ backgroundColor: "#233142" }}
+    >
       <div className="flex-shrink-0 lg:w-6/12 xl:w-6/12">
-        <img
-          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          className="rounded-xl w-full h-72 lg:h-full object-cover"
-          alt="Sample image"
-        />
+        <div className="flex justify-center items-center w-full h-72 lg:h-auto">
+          <img
+            src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            className="rounded-xl max-w-full max-h-full object-contain"
+            alt="Sample image"
+          />
+        </div>
       </div>
 
       <div className="flex justify-center items-center p-6 w-full lg:w-6/12 xl:w-5/12">
