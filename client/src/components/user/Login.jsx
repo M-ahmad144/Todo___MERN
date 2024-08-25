@@ -44,15 +44,12 @@ export default function Login() {
   };
 
   return (
-    <section
-      className="flex lg:flex-row flex-col h-screen text-white"
-      style={{ backgroundColor: "#233142" }}
-    >
+    <section className="flex lg:flex-row flex-col h-screen text-white">
       {/* Left column container with background */}
-      <div className="flex-shrink-0 lg:w-6/12 xl:w-6/12">
+      <div className="relative flex justify-center items-center lg:w-6/12 xl:w-7/12 h-full">
         <img
-          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          className="rounded-xl w-full h-72 lg:h-full object-cover"
+          src="/flat-design-time-management-illustration.png"
+          className="top-1/2 left-1/2 absolute rounded-xl w-[80%] h-auto transform -translate-x-1/2 -translate-y-1/2 object-cover"
           alt="Sample image"
         />
       </div>

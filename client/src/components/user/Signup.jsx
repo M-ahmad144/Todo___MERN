@@ -50,18 +50,14 @@ export default function Signup() {
   };
 
   return (
-    <section
-      className="flex lg:flex-row flex-col h-screen text-white"
-      style={{ backgroundColor: "#233142" }}
-    >
-      <div className="flex-shrink-0 lg:w-6/12 xl:w-6/12">
-        <div className="flex justify-center items-center w-full h-72 lg:h-auto">
-          <img
-            src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-            className="rounded-xl max-w-full max-h-full object-contain"
-            alt="Sample image"
-          />
-        </div>
+    <section className="flex lg:flex-row flex-col h-screen text-white">
+      {/* Left column container with background */}
+      <div className="relative flex justify-center items-center lg:w-6/12 xl:w-6/12 h-full">
+        <img
+          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          className="top-1/2 left-1/2 absolute rounded-xl w-[80%] h-auto transform -translate-x-1/2 -translate-y-1/2 object-cover"
+          alt="Sample image"
+        />
       </div>
 
       <div className="flex justify-center items-center p-6 w-full lg:w-6/12 xl:w-5/12">

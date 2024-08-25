@@ -41,16 +41,34 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("user/logout", async () => {
-  await axios.get("/api/v1/auth/logout");
-  Cookies.remove("token");
-});
+export const logout = createAsyncThunk(
+  "user/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      // Perform the logout request
+      const response = await axios.get("/api/v1/auth/logout");
 
+      // Check if the response status is success
+      if (response.status === 200) {
+        // Assuming 200 is the success status code
+        Cookies.remove("token"); // Remove the token
+        console.log("Logged out successfully");
+        return; // Indicate successful logout
+      } else {
+        return rejectWithValue("Logout failed: unexpected status code"); // Handle unexpected status
+      }
+    } catch (error) {
+      // Handle errors from the request
+      console.error("Logout error:", error);
+      return rejectWithValue(error.message); // Pass the error message to the rejected action
+    }
+  }
+);
 export const getUser = createAsyncThunk(
   "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get("/api/v1/user/getUser");
+      const { data } = await axios.get("/api/v1/users/me");
       return data.user;
     } catch (error) {
       if (error.response && error.response.data.message) {
