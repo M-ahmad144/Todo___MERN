@@ -1,3 +1,19 @@
+
+Authentication Endpoints
+POST /api/users/register: Create a new user account
+POST /api/users/login: Login to an existing user account
+/api/users/logout
+GET /api/users/me: Get the currently logged-in user's profile
+PATCH /api/users/me: Update the currently logged-in user's profile
+
+
+
+
+
+
+
+
+
 Based on the UI design and the provided `todoSchema`, here are the REST API endpoints for managing Todos:
 
 ### **Todo API Endpoints**

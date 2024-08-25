@@ -21,3 +21,16 @@ exports.loginUser = catchAsync(async (req, res, next) => {
   }
   sendCookie(user, 200, res);
 });
+
+exports.logoutUser = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000), // Cookie expires after 10 seconds
+    httpOnly: true, // Cookie cannot be accessed by client-side scripts
+    secure:
+      process.env.NODE_ENV === "production"
+        ? req.secure || req.headers["x-forwarded-proto"] === "https"
+        : false, // Secure only in production
+    sameSite: "strict", // Prevents the cookie from being sent in cross-site requests
+  });
+  res.status(200).json({ status: "success" });
+};

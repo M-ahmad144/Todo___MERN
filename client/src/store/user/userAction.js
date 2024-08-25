@@ -6,7 +6,7 @@ export const signup = createAsyncThunk(
   "user/signup",
   async (formData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/api/v1/user/signup", formData);
+      const { data } = await axios.post("/api/v1/auth/signup", formData);
 
       if (data.status === "success") {
         Cookies.set("token", data.token);
@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
   "user/login",
   async (formData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/api/v1/user/login", formData);
+      const { data } = await axios.post("/api/v1/auth/login", formData);
       Cookies.set("token", data.token);
       return data.user;
     } catch (error) {
@@ -42,7 +42,7 @@ export const login = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("user/logout", async () => {
-  await axios.get("/api/v1/user/logout");
+  await axios.get("/api/v1/auth/logout");
   Cookies.remove("token");
 });
 
