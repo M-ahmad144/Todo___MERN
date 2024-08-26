@@ -2,7 +2,6 @@ const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const { sendCookie } = require("../utils/sendCookie");
 const ErrorHandler = require("../utils/errorHandler");
-
 exports.signupUser = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
   const user = await User.create({ name, email, password, passwordConfirm });
@@ -29,8 +28,8 @@ exports.logoutUser = (req, res) => {
     secure:
       process.env.NODE_ENV === "production"
         ? req.secure || req.headers["x-forwarded-proto"] === "https"
-        : false, // Secure only in production
-    sameSite: "strict", // Prevents the cookie from being sent in cross-site requests
+        : false,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   });
   res.status(200).json({ status: "success" });
 };
