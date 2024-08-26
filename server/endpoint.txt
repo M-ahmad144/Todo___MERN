@@ -1,110 +1,46 @@
+**1. Frontend
+UI Design
+Homepage
 
-Authentication Endpoints
-POST /api/users/register: Create a new user account
-POST /api/users/login: Login to an existing user account
-/api/users/logout
-GET /api/users/me: Get the currently logged-in user's profile
-PATCH /api/users/me: Update the currently logged-in user's profile
+Header: Include navigation links (Home, Login, Signup).
+Todo List: Display a list of todos with filters (e.g., by status or priority).
+Add Todo: Form to add a new todo item.
+Todo Item: Each todo should show title, description, due date, priority, and status.
+Actions: Buttons for editing, marking as completed, and deleting todos.
+Footer: Optional information or links.
+Authentication Pages
 
+Login Page: Form with fields for email and password, and a submit button.
+Signup Page: Form with fields for name, email, password, and password confirmation.
+Responsive Design
 
+Ensure the design works well on both desktop and mobile devices.
+Frontend Technologies
+React: For building the user interface with reusable components.
+Redux: To manage global state, especially for authentication and todos.
+React Router: For client-side routing between pages.
+Axios: For making API requests to the backend.
+CSS/SASS: For styling the application, or use a framework like Bootstrap/TailwindCSS.
+**2. Backend
+API Endpoints
+User Authentication
 
+Signup: POST /api/v1/auth/signup - Register a new user.
+Login: POST /api/v1/auth/login - Authenticate and generate a JWT token.
+Logout: GET /api/v1/auth/logout - Clear user session and token.
+Todo Management
 
+Get Todos: GET /api/v1/todos - Retrieve all todos for the authenticated user.
+Create Todo: POST /api/v1/todos - Add a new todo item.
+Update Todo: PUT /api/v1/todos/:id - Update an existing todo item.
+Delete Todo: DELETE /api/v1/todos/:id - Remove a todo item.
+Filter Todos: Add query parameters to filter todos by status, priority, or tags.
 
-
-
-
-
-Based on the UI design and the provided `todoSchema`, here are the REST API endpoints for managing Todos:
-
-### **Todo API Endpoints**
-
-1. **Create a New Todo**
-   - **Endpoint**: `POST /todos`
-   - **Description**: Create a new Todo item.
-
-   Search Todos by Title
-
-Endpoint: GET /todos/search
-Description: Search for Todo items by their title.
-Query Parameters:
-title (string, required): The title or part of the title to search for.
-Example Request:
-http
-Copy code
-GET /todos/search?title=meeting
-
-2. **Get All Todos**
-   - **Endpoint**: `GET /todos`
-   - **Description**: Retrieve all Todo items.
-   - **Query Parameters** (optional):
-     - `title` (string): Search todos by title.
-     - `completed` (boolean): Filter by completion status.
-     - `priority` (string): Filter by priority (`low`, `medium`, `high`).
-     - `category` (ObjectId): Filter by category ID.
-     - `userId` (ObjectId): Filter by user ID (creator).
-     - `status` (string): Filter by status (`pending`, `in-progress`, `completed`, `archived`).
-
-3. **Get a Todo by ID**
-   - **Endpoint**: `GET /todos/:id`
-   - **Description**: Retrieve a single Todo item by its ID.
-
-4. **Update a Todo**
-   - **Endpoint**: `PUT /todos/:id`
-   - **Description**: Update an existing Todo item by its ID.
-
-5. **Delete a Todo**
-   - **Endpoint**: `DELETE /todos/:id`
-   - **Description**: Delete a Todo item by its ID.
-
-6. **Mark Todo as Completed**
-   - **Endpoint**: `PATCH /todos/:id/completed`
-   - **Description**: Mark a Todo item as completed or not completed.
-   - **Request Body**:
-     ```json
-     {
-       "completed": true
-     }
-     ```
-
-7. **Assign Todo to User**
-   - **Endpoint**: `PATCH /todos/:id/assign`
-   - **Description**: Assign or reassign a Todo item to a user.
-   - **Request Body**:
-     ```json
-     {
-       "assignedTo": "605c72ef9f1b2c001f6478b1" // ObjectId of the user
-     }
-     ```
-
-8. **Filter Todos by Category**
-   - **Endpoint**: `GET /todos?category=:categoryId`
-   - **Description**: Retrieve Todos filtered by category.
-
-9. **Filter Todos by User**
-   - **Endpoint**: `GET /todos?userId=:userId`
-   - **Description**: Retrieve Todos created by or assigned to a specific user.
-
-10. **Update Todo Status**
-    - **Endpoint**: `PATCH /todos/:id/status`
-    - **Description**: Update the status of a Todo item.
-    - **Request Body**:
-      ```json
-      {
-        "status": "completed"
-      }
-      ```
-
-### **Summary**
-
-- **POST** `/todos` - Create a new Todo
-- **GET** `/todos` - List Todos with optional filters
-- **GET** `/todos/:id` - Get Todo by ID
-- **PUT** `/todos/:id` - Update Todo by ID
-- **DELETE** `/todos/:id` - Delete Todo by ID
-- **PATCH** `/todos/:id/completed` - Mark Todo as completed
-- **PATCH** `/todos/:id/assign` - Assign Todo to a user
-- **GET** `/todos?category=:categoryId` - Filter Todos by category
-- **GET** `/todos?userId=:userId` - Filter Todos by user
-- **PATCH** `/todos/:id/status` - Update Todo status
-
-These endpoints should cover the necessary operations to manage Todos effectively and interact with the UI components described.
+//input fields
+Title (required)
+Description (optional)
+Completed (boolean, default to false)
+Due Date (optional)
+Priority (optional, with predefined options)
+Tag (optional, if using tags)
+Status (pending,overdue,today  optional, with predefined options)

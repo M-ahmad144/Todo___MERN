@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 
 const authRouter = require("./routes/api/auth");
 const userRouter = require("./routes/api/users");
+const tagsRouter = require("./routes/api/tags");
+const todoRouter = require("./routes/api/todos");
 const globalErrorHandlerMiddleware = require("./middlewares/globalErrorHandlerMiddleware");
 const errorHandler = require("./utils/errorHandler");
 
@@ -13,12 +15,7 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Adjust as needed
-    credentials: true, // Allow cookies and credentials
-  })
-);
+app.use(cors({}));
 
 app.use(morgan("dev"));
 app.use((req, res, next) => {
@@ -28,6 +25,8 @@ app.use((req, res, next) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/tags", tagsRouter);
+app.use("/api/v1/todos", todoRouter);
 
 app.all("*", (req, res, next) => {
   next(new errorHandler(`Can't find ${req.originalUrl} on this server`, 404));

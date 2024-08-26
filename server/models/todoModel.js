@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
-const todoSchema = new mongoose.Schema(
+const { Schema } = mongoose;
+
+const todoSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Please add a title"],
+      unique: [true, "Title must be unique"],
       trim: true,
+      required: [true, "Please add a title"],
       maxlength: [50, "Title cannot be more than 50 characters"],
-      index: true,
     },
     description: {
       type: String,
-      required: false,
       trim: true,
       maxlength: [500, "Description cannot be more than 500 characters"],
     },
@@ -20,40 +21,35 @@ const todoSchema = new mongoose.Schema(
     },
     dueDate: {
       type: Date,
+      required: [true, "Due date is required"],
     },
     priority: {
       type: String,
       enum: ["low", "medium", "high"],
+      default: "medium", // Default priority
     },
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      index: true,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
-    category: {
+    tag: {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: "Tag", // Reference to the Tag model
+      index: true, // Index for faster lookup
+      required: [true, "Tag is required"],
     },
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      index: true,
     },
 
     status: {
       type: String,
-      enum: ["pending", "in-progress", "completed", "archived"],
+      enum: ["pending", "today", "overdue"],
+      default: "pending", // Default status
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
   }
 );
+todoSchema.index({ title: 1 }, { unique: true });
 
 module.exports = mongoose.model("Todo", todoSchema);
