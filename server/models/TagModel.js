@@ -6,7 +6,10 @@ const tagSchema = new Schema({
     type: String,
     required: [true, "Tag name is required"],
     trim: true,
+    unique: true,
   },
 });
+
+tagSchema.index({ name: 1 });
 
 module.exports = mongoose.model("Tag", tagSchema);

@@ -50,6 +50,6 @@ const todoSchema = new Schema(
     timestamps: true, // Automatically adds createdAt and updatedAt fields
   }
 );
-todoSchema.index({ title: 1 }, { unique: true });
+todoSchema.index({ title: 1 });
 
 module.exports = mongoose.model("Todo", todoSchema);
