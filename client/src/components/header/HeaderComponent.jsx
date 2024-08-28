@@ -89,7 +89,7 @@ function Header() {
 
         {/* Dropdown Menu */}
         {showMenu && (
-          <div className="top-16 right-0 absolute bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 shadow-lg p-4 rounded-lg w-64 transform origin-top-right transition-all duration-300 ease-in-out scale-100 user-menu">
+          <div className="top-16 right-0 z-10 absolute bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 shadow-lg p-4 rounded-lg w-64 transform origin-top-right transition-all duration-300 ease-in-out scale-100 user-menu">
             <div className="flex flex-col items-center">
               <div className="w-full">
                 <div className="flex flex-col items-center mb-4">

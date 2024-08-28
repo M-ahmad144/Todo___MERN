@@ -1,8 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
-  background: linear-gradient(135deg, #2e1d5b, #4a3069, #7c416e);
+  /* Use a linear gradient for the background */
+  /* background: linear-gradient(135deg, #5b3ba4, #a44794, #e24ef0); */
+
+  background: linear-gradient(135deg, #6f5aa0, #e99494, #2d5b8f);
+
+  /* Ensure the gradient covers the entire viewport */
   height: 100vh;
   margin: 0;
   background-attachment: fixed;
