@@ -2,11 +2,25 @@ const catchAsync = require("../utils/catchAsync");
 const Todo = require("../models/todoModel");
 const Tag = require("../models/TagModel");
 const errorHandler = require("../utils/errorHandler");
+const QueryFeatures = require("../utils/QueryFeatures");
 
 exports.getAllTodos = catchAsync(async (req, res, next) => {
-  const todos = await Todo.find({ user: req.user._id }).populate("tag").sort({
-    createdAt: -1,
-  });
+  // Initialize QueryFeatures with the base query and request query parameters
+  const features = new QueryFeatures(
+    Todo.find({ user: req.user._id }), // Adjust the query as needed
+    req.query
+  )
+    .filter()
+    .sort()
+    .limitedFields()
+    .paginate()
+    .filterByStatus()
+    .filterByPriority();
+  await features.filterByTag();
+
+  // Ensure the query is properly executed
+  const todos = await features.query.populate("tag"); // Populate tags if needed
+
   res.status(200).json({
     status: "success",
     results: todos.length,

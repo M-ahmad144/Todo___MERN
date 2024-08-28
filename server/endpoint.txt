@@ -35,6 +35,9 @@ Create Todo: POST /api/v1/todos - Add a new todo item.
 Update Todo: PUT /api/v1/todos/:id - Update an existing todo item.
 Delete Todo: DELETE /api/v1/todos/:id - Remove a todo item.
 Filter Todos: Add query parameters to filter todos by status, priority, or tags.
+getCompletedTodos
+toggleTodoCompletion
+
 
 //input fields
 Title (required)

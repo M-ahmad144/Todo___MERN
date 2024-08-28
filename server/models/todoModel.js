@@ -31,7 +31,6 @@ const todoSchema = new Schema(
     tag: {
       type: Schema.Types.ObjectId,
       ref: "Tag", // Reference to the Tag model
-      index: true, // Index for faster lookup
       required: [true, "Tag is required"],
     },
     user: {

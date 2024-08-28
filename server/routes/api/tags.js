@@ -3,6 +3,6 @@ const { getTags } = require("../../controllers/tagController");
 
 const router = express.Router();
 
-router.get("/", getTags);
+router.get("/getAllTags", getTags);
 
 module.exports = router;
