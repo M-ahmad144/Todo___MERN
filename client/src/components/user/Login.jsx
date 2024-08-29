@@ -44,7 +44,7 @@ export default function Login() {
   };
 
   return (
-    <section className="flex lg:flex-row flex-col h-screen text-white">
+    <section className="flex lg:flex-row flex-col h-screen text-gray-100">
       {/* Left column container with background */}
       <div className="relative flex justify-center items-center lg:w-6/12 xl:w-7/12 h-full">
         <img
@@ -60,14 +60,14 @@ export default function Login() {
           {/* Sign in section */}
           <div className="mb-8 text-center">
             <p className="mb-2 font-bold text-3xl">Sign in</p>
-            <p className="text-gray-400 text-sm">Access your account</p>
+            <p className="text-gray-50 text-sm">Access your account</p>
           </div>
 
           {/* Email input */}
           <div className="mb-6">
             <label
               htmlFor="email"
-              className="block mb-2 font-medium text-gray-300 text-sm"
+              className="block mb-2 font-medium text-gray-50 text-sm"
             >
               Email address
             </label>
@@ -76,7 +76,7 @@ export default function Login() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-black transition duration-300 placeholder-gray-500"
               placeholder="Enter your email"
             />
           </div>
@@ -85,7 +85,7 @@ export default function Login() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block mb-2 font-medium text-gray-300 text-sm"
+              className="block mb-2 font-medium text-gray-50 text-sm"
             >
               Password
             </label>
@@ -94,7 +94,7 @@ export default function Login() {
               type="password"
               value={formData.password}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-black transition duration-300 placeholder-gray-500"
               placeholder="Enter your password"
             />
           </div>
@@ -103,7 +103,7 @@ export default function Login() {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-red-400 hover:bg-red-500 focus:bg-red-600 active:bg-red-700 shadow-md px-6 py-3 rounded-lg font-medium text-white transition duration-300"
+              className="bg-red-400 hover:bg-red-500 focus:bg-red-600 active:bg-red-700 shadow-md px-6 py-3 rounded-lg font-medium text-black transition duration-300"
               disabled={loading}
             >
               {loading ? (

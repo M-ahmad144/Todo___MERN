@@ -69,7 +69,7 @@ function Header() {
   }
 
   return (
-    <header className="flex justify-between items-center bg-gradient-to-r from-purple-800 via-purple-600 to-purple-500 shadow-lg p-4">
+    <header className="flex justify-between items-center bg-white/20 shadow-lg p-4">
       {/* Logo Section */}
       <Link
         to="#"
@@ -86,10 +86,15 @@ function Header() {
         >
           <FaUser className="text-xl" />
         </button>
-
         {/* Dropdown Menu */}
         {showMenu && (
-          <div className="top-16 right-0 z-10 absolute bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 shadow-lg p-4 rounded-lg w-64 transform origin-top-right transition-all duration-300 ease-in-out scale-100 user-menu">
+          <div
+            className="right-0 z-50 fixed md:absolute p-4 rounded-lg w-6/12 md:w-64 md:h-auto transform transition duration-300 overflow-auto ease-in-out user-menu"
+            style={{
+              background: "linear-gradient(135deg, #6f5aa0, #e99494, #2d5b8f)",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+          >
             <div className="flex flex-col items-center">
               <div className="w-full">
                 <div className="flex flex-col items-center mb-4">
@@ -106,7 +111,7 @@ function Header() {
                     onClick={handleLogout}
                     className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md w-full text-gray-100 transition-colors"
                   >
-                    Logout
+                    {user?.name ? "Logout" : "Login"}
                   </button>
                 </div>
               </div>

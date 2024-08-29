@@ -7,7 +7,7 @@ const QueryFeatures = require("../utils/QueryFeatures");
 exports.getAllTodos = catchAsync(async (req, res, next) => {
   // Initialize QueryFeatures with the base query and request query parameters
   const features = new QueryFeatures(
-    Todo.find({ user: req.user._id }), // Adjust the query as needed
+    Todo.find({ user: req.user._id }),
     req.query
   )
     .filter()

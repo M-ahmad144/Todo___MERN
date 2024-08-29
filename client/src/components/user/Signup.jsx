@@ -50,7 +50,7 @@ export default function Signup() {
   };
 
   return (
-    <section className="flex lg:flex-row flex-col h-screen text-white">
+    <section className="flex lg:flex-row flex-col h-screen text-gray-100">
       {/* Left column container with background */}
       <div className="relative flex justify-center items-center lg:w-6/12 xl:w-6/12 h-full">
         <img
@@ -64,13 +64,13 @@ export default function Signup() {
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-8 text-center">
             <p className="mb-2 font-bold text-3xl">Sign up</p>
-            <p className="text-gray-400 text-sm">Create a new account</p>
+            <p className="text-gray-50 text-sm">Create a new account</p>
           </div>
 
           <div className="mb-6">
             <label
               htmlFor="username"
-              className="block mb-2 font-medium text-gray-300 text-sm"
+              className="block mb-2 font-medium text-gray-50 text-sm"
             >
               Username
             </label>
@@ -79,7 +79,7 @@ export default function Signup() {
               type="text"
               value={formData.name}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
               placeholder="Enter your username"
             />
           </div>
@@ -87,7 +87,7 @@ export default function Signup() {
           <div className="mb-6">
             <label
               htmlFor="email"
-              className="block mb-2 font-medium text-gray-300 text-sm"
+              className="block mb-2 font-medium text-gray-50 text-sm"
             >
               Email address
             </label>
@@ -96,7 +96,7 @@ export default function Signup() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
               placeholder="Enter your email"
             />
           </div>
@@ -104,7 +104,7 @@ export default function Signup() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block mb-2 font-medium text-gray-300 text-sm"
+              className="block mb-2 font-medium text-gray-50 text-sm"
             >
               Password
             </label>
@@ -113,7 +113,7 @@ export default function Signup() {
               type="password"
               value={formData.password}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
               placeholder="Enter your password"
             />
           </div>
@@ -121,7 +121,7 @@ export default function Signup() {
           <div className="mb-6">
             <label
               htmlFor="passwordConfirm"
-              className="block mb-2 font-medium text-gray-300 text-sm"
+              className="block mb-2 font-medium text-gray-50 text-sm"
             >
               Confirm Password
             </label>
@@ -130,7 +130,7 @@ export default function Signup() {
               type="password"
               value={formData.passwordConfirm}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
               placeholder="Confirm your password"
             />
           </div>
@@ -138,7 +138,7 @@ export default function Signup() {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-red-400 hover:bg-red-500 focus:bg-red-600 active:bg-red-700 shadow-md px-6 py-3 rounded-lg font-medium text-white transition duration-300"
+              className="bg-red-400 hover:bg-red-500 focus:bg-red-600 active:bg-red-700 shadow-md px-6 py-3 rounded-lg font-medium text-gray-100 transition duration-300"
               disabled={loading}
             >
               {loading ? (
