@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   Typography,
   CardBody,
@@ -11,6 +12,7 @@ import {
   TrashIcon,
   ChevronUpDownIcon,
 } from "@heroicons/react/24/solid";
+import AddTaskModal from "./AddTaskModal";
 
 const TABLE_HEAD = ["Title", "Due Date", "Priority", "Actions"];
 const TABLE_ROWS = [
@@ -30,6 +32,14 @@ const TABLE_ROWS = [
 ];
 
 const TodoTable = () => {
+  const [isModalOpen, setModalOpen] = useState(false); // State to control modal visibility
+  const handleEditTask = () => {
+    setModalOpen(true); // Show the modal
+  };
+
+  const closeModal = () => {
+    setModalOpen(false); // Hide the modal
+  };
   return (
     <CardBody className="flex-grow bg-transparent lg:mr-20 lg:ml-20 p-4 overflow-x-auto">
       <table className="mt-4 w-full min-w-max text-left table-auto">
@@ -99,15 +109,24 @@ const TodoTable = () => {
                 </Typography>
               </td>
               <td className="border-gray-700 p-2 border-b">
-                <div className="flex justify-center items-center gap-8 md:gap-10">
+                <div className="flex justify-center items-center gap-1 md:gap-10">
                   <Tooltip content="Edit Task">
-                    <IconButton variant="text">
-                      <PencilIcon className="w-4 h-4 text-blue-600" />
+                    <IconButton
+                      onClick={() => {
+                        handleEditTask();
+                      }}
+                      variant="text"
+                      className="bg-transparent p-4"
+                    >
+                      <PencilIcon className="w-4 h-4 text-black" />
                     </IconButton>
                   </Tooltip>
                   <Tooltip content="Delete Task">
-                    <IconButton variant="text">
-                      <TrashIcon className="w-4 h-4 text-red-600" />
+                    <IconButton
+                      variant="text"
+                      className="bg-transparent p-1 rounded-full text-red-600"
+                    >
+                      <TrashIcon className="w-4 h-4" />
                     </IconButton>
                   </Tooltip>
                 </div>
@@ -116,6 +135,8 @@ const TodoTable = () => {
           ))}
         </tbody>
       </table>
+      {/* EditTaskModal is rendered here */}
+      <AddTaskModal isOpen={isModalOpen} onClose={closeModal} />
     </CardBody>
   );
 };
