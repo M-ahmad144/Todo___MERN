@@ -4,6 +4,7 @@ import {
   CardBody,
   IconButton,
   Tooltip,
+  Checkbox,
 } from "@material-tailwind/react";
 import {
   PencilIcon,
@@ -60,15 +61,20 @@ const TodoTable = () => {
           {TABLE_ROWS.map((todo) => (
             <tr
               key={todo.title}
-              className="hover:bg-blue-800/20 transition-colors duration-200"
+              className="hover:bg-pink-800/20 transition-colors duration-200"
             >
-              <td className="border-purple-700 p-2 md:p-4 border-b">
+              <td className="border-purple-700 p-2 md:p-4 border-b font-sans md:font-semibold md:text-lg">
                 <Typography
                   variant="large"
                   style={{ color: "black" }}
                   className="font-semiBold"
                 >
-                  {todo.title}
+                  <div className="flex justify-between items-center gap-2">
+                    {todo.title}
+                    <span className="md:relative right-28">
+                      <Checkbox />
+                    </span>
+                  </div>
                 </Typography>
               </td>
               <td className="border-gray-700 p-2 md:p-4 border-b">
