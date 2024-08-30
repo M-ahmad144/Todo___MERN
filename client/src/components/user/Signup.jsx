@@ -50,12 +50,12 @@ export default function Signup() {
   };
 
   return (
-    <section className="flex lg:flex-row flex-col h-screen text-gray-100">
+    <section className="flex lg:flex-row flex-col h-screen text-white">
       {/* Left column container with background */}
       <div className="relative flex justify-center items-center lg:w-6/12 xl:w-6/12 h-full">
         <img
           src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          className="top-1/2 left-1/2 absolute rounded-xl w-[80%] h-auto transform -translate-x-1/2 -translate-y-1/2 object-cover"
+          className="top-1/2 left-1/2 absolute mt-3 rounded-xl w-[40%] h-auto transform -translate-x-1/2 -translate-y-1/2 object-cover"
           alt="Sample image"
         />
       </div>
@@ -79,7 +79,7 @@ export default function Signup() {
               type="text"
               value={formData.name}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
               placeholder="Enter your username"
             />
           </div>
@@ -96,7 +96,7 @@ export default function Signup() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
               placeholder="Enter your email"
             />
           </div>
@@ -113,7 +113,7 @@ export default function Signup() {
               type="password"
               value={formData.password}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
               placeholder="Enter your password"
             />
           </div>
@@ -130,7 +130,7 @@ export default function Signup() {
               type="password"
               value={formData.passwordConfirm}
               onChange={handleChange}
-              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-gray-100 transition duration-300 placeholder-gray-500"
+              className="border-gray-700 focus:border-primary bg-gray-900 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary w-full text-white transition duration-300 placeholder-gray-500"
               placeholder="Confirm your password"
             />
           </div>
@@ -138,7 +138,7 @@ export default function Signup() {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-red-400 hover:bg-red-500 focus:bg-red-600 active:bg-red-700 shadow-md px-6 py-3 rounded-lg font-medium text-gray-100 transition duration-300"
+              className="bg-purple-500 hover:bg-red-500 focus:bg-red-600 active:bg-red-700 shadow-md px-6 py-3 rounded-lg font-medium text-white transition duration-300"
               disabled={loading}
             >
               {loading ? (
