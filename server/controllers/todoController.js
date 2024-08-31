@@ -5,9 +5,20 @@ const errorHandler = require("../utils/errorHandler");
 const QueryFeatures = require("../utils/QueryFeatures");
 
 exports.getAllTodos = catchAsync(async (req, res, next) => {
+  const todos = await Todo.find();
+  res.status(200).json({
+    status: "success",
+    results: todos.length,
+    data: {
+      todos,
+    },
+  });
+});
+
+exports.getInCompleteTodo = catchAsync(async (req, res, next) => {
   // Initialize QueryFeatures with the base query and request query parameters
   const features = new QueryFeatures(
-    Todo.find({ user: req.user._id }),
+    Todo.find({ user: req.user._id, completed: false }),
     req.query
   )
     .filter()
@@ -26,6 +37,55 @@ exports.getAllTodos = catchAsync(async (req, res, next) => {
     results: todos.length,
     data: {
       todos,
+    },
+  });
+});
+
+exports.getCompletedTodos = catchAsync(async (req, res, next) => {
+  const features = new QueryFeatures(
+    Todo.find({ user: req.user._id, completed: true }),
+    req.query
+  )
+    .filter()
+    .sort()
+    .limitedFields()
+    .paginate()
+    .filterByStatus()
+    .filterByPriority();
+  await features.filterByTag();
+
+  // Ensure the query is properly executed
+  const todos = await features.query.populate("tag");
+
+  res.status(200).json({
+    status: "success",
+    results: todos.length,
+    data: {
+      todos,
+    },
+  });
+});
+
+exports.toggleTodoCompletion = catchAsync(async (req, res, next) => {
+  // Find the todo by ID
+  const todo = await Todo.findById(req.params.id);
+
+  // Check if the todo exists
+  if (!todo) {
+    return next(new errorHandler("Todo not found", 404));
+  }
+
+  // Toggle the completed status
+  todo.completed = !todo.completed;
+
+  // Save the updated todo
+  await todo.save();
+
+  // Respond with the updated status
+  res.status(200).json({
+    status: "success",
+    data: {
+      completed: todo.completed,
     },
   });
 });
@@ -141,39 +201,4 @@ exports.deleteTodo = catchAsync(async (req, res, next) => {
   }
 
   errorHandler("Todo not found", 404);
-});
-
-exports.getCompletedTodos = catchAsync(async (req, res, next) => {
-  const todos = await Todo.find({ user: req.user._id, completed: true });
-  res.status(200).json({
-    status: "success",
-    results: todos.length,
-    data: {
-      todos,
-    },
-  });
-});
-
-exports.toggleTodoCompletion = catchAsync(async (req, res, next) => {
-  // Find the todo by ID
-  const todo = await Todo.findById(req.params.id);
-
-  // Check if the todo exists
-  if (!todo) {
-    return next(new errorHandler("Todo not found", 404));
-  }
-
-  // Toggle the completed status
-  todo.completed = !todo.completed;
-
-  // Save the updated todo
-  await todo.save();
-
-  // Respond with the updated status
-  res.status(200).json({
-    status: "success",
-    data: {
-      completed: todo.completed,
-    },
-  });
 });

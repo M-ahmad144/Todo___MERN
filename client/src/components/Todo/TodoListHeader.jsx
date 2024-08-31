@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { Button, CardHeader } from "@material-tailwind/react";
 import FilterTag from "./FilterTag";
 import AddTaskModal from "./AddTaskModal";
 
-const TodoListHeader = () => {
-  const [isModalOpen, setModalOpen] = useState(false); // State to control modal visibility
+// Define event handlers outside of the component to avoid re-creation on every render
+const handleAddTask = (setModalOpen) => () => {
+  setModalOpen(true);
+};
 
-  const handleAddTask = () => {
-    setModalOpen(true); // Show the modal
-  };
+const TodoListHeader = memo(() => {
+  const [isModalOpen, setModalOpen] = useState(false); // State to control modal visibility
 
   const closeModal = () => {
     setModalOpen(false); // Hide the modal
@@ -40,7 +41,7 @@ const TodoListHeader = () => {
 
         <div className="flex flex-row justify-start items-center gap-4 md:mt-40 font-sans font-semibold">
           <Button
-            onClick={handleAddTask}
+            onClick={handleAddTask(setModalOpen)}
             className="bg-black hover:bg-white text-white hover:text-black transition"
           >
             + Add Task
@@ -55,6 +56,6 @@ const TodoListHeader = () => {
       <AddTaskModal isOpen={isModalOpen} onClose={closeModal} />
     </CardHeader>
   );
-};
+});
 
 export default TodoListHeader;

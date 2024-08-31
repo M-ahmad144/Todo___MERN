@@ -1,16 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Checkbox } from "primereact/checkbox";
 
-export default function CheckBox() {
-  const [checked, setChecked] = useState(false);
-
+export default function CheckBox({ checked, onChange }) {
   return (
     <div className="flex justify-content-center card">
-      <Checkbox
-        variant="filled"
-        onChange={(e) => setChecked(e.checked)}
-        checked={checked}
-      ></Checkbox>
+      <Checkbox variant="filled" onChange={onChange} checked={checked} />
     </div>
   );
 }

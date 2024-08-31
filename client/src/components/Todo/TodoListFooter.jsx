@@ -4,7 +4,7 @@ import { Typography, Button, CardFooter } from "@material-tailwind/react";
 const TodoListFooter = () => {
   return (
     <CardFooter className="flex justify-between items-center lg:mr-20 lg:ml-20 p-4">
-      <Typography variant="large" color="black" className="font-semibold">
+      <Typography variant="small" color="black" className="font-semibold">
         Page 1 of 10
       </Typography>
       <div className="flex gap-2">

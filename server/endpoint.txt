@@ -39,6 +39,23 @@ getCompletedTodos
 toggleTodoCompletion
 
 
+// Add todo thunk
+//get todos thunk
+//update todo thunk
+//delete todo thunk
+//toggle todo thunk
+//get completed todos thunk
+
+// ****  get Todos headers:get todos that have a certain status - pending, overdue, today
+
+// ****  get Todos that are completed - true or false
+
+//***    get todos that have a certain tag - work, personal etc
+
+// ****  get Todos :get todos that have a certain priority - high, medium, low
+
+
+
 //input fields
 Title (required)
 Description (optional)
