@@ -1,17 +1,12 @@
 // src/store/todo/todoSelectors.js
 
-export const selectGetInCompleteTodo = (state) => state.todos.todos;
-
-// *** Todo Error Loading State Selectors ***
-// src/store/todo/todoSelectors.js
+export const selectGetTodos = (state) => state.todos.todos;
 export const selectLoading = (state) => state.todos.loading;
 export const selectToggleTodoCompletionLoading = (state) =>
   state.todos.toggleLoading;
 export const selectError = (state) => state.todos.error;
 export const selectToggleTodoCompletionError = (state) =>
   state.todos.toggleError;
-
-// *** Selectors for toggleTodoCompletion action ***
 
 // Selector to find a specific todo by ID
 export const selectTodoById = (state, todoId) =>

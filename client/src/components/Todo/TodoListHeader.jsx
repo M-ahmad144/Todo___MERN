@@ -1,18 +1,50 @@
 import React, { useState, memo } from "react";
+import { useDispatch } from "react-redux";
 import { Button, CardHeader } from "@material-tailwind/react";
-import FilterTag from "./FilterTag";
+import { getTodos } from "../../store/todo/todoAction";
 import AddTaskModal from "./AddTaskModal";
-
-// Define event handlers outside of the component to avoid re-creation on every render
-const handleAddTask = (setModalOpen) => () => {
-  setModalOpen(true);
-};
+import FilterTag from "./FilterTag";
 
 const TodoListHeader = memo(() => {
-  const [isModalOpen, setModalOpen] = useState(false); // State to control modal visibility
+  const dispatch = useDispatch();
+  const [activeFilter, setActiveFilter] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
 
+  // Handle filter changes based on label
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter.toLowerCase());
+    let filterOptions = {};
+
+    // Mapping the filter to specific query parameters
+    switch (filter.toLowerCase()) {
+      case "pending":
+        filterOptions.status = "pending";
+        break;
+      case "completed":
+        filterOptions.status = "completed";
+        break;
+      case "today":
+        filterOptions.status = "today";
+        break;
+      case "overdue":
+        filterOptions.status = "overdue";
+        break;
+      default:
+        break;
+    }
+
+    // Dispatch the action with the filter parameters
+    dispatch(getTodos(filterOptions));
+  };
+
+  // Open the modal to add tasks
+  const handleAddTask = () => {
+    setModalOpen(true);
+  };
+
+  // Close the modal
   const closeModal = () => {
-    setModalOpen(false); // Hide the modal
+    setModalOpen(false);
   };
 
   return (
@@ -29,7 +61,12 @@ const TodoListHeader = memo(() => {
                 {["Today", "Pending", "Overdue", "Completed"].map((label) => (
                   <div
                     key={label}
-                    className="flex-1 bg-transparent hover:bg-black px-4 py-2 rounded-lg font-semibold text-sm md:text-xl hover:text-white transition-colors duration-200 cursor-pointer ease-in-out"
+                    onClick={() => handleFilterChange(label)}
+                    className={`flex-1 px-4 py-2 rounded-lg font-semibold text-sm md:text-xl transition-colors duration-200 cursor-pointer ease-in-out ${
+                      activeFilter === label.toLowerCase()
+                        ? "bg-black text-white"
+                        : "bg-transparent text-white hover:bg-black hover:text-white"
+                    }`}
                   >
                     {label}
                   </div>
@@ -41,7 +78,7 @@ const TodoListHeader = memo(() => {
 
         <div className="flex flex-row justify-start items-center gap-4 md:mt-40 font-sans font-semibold">
           <Button
-            onClick={handleAddTask(setModalOpen)}
+            onClick={handleAddTask}
             className="bg-black hover:bg-white text-white hover:text-black transition"
           >
             + Add Task
@@ -52,7 +89,7 @@ const TodoListHeader = memo(() => {
         </div>
       </div>
 
-      {/* AddTaskModal is rendered here */}
+      {/* Render AddTaskModal */}
       <AddTaskModal isOpen={isModalOpen} onClose={closeModal} />
     </CardHeader>
   );

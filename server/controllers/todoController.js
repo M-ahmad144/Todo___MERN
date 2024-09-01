@@ -25,7 +25,7 @@ exports.getInCompleteTodo = catchAsync(async (req, res, next) => {
     .sort()
     .limitedFields()
     .paginate()
-    .filterByStatus()
+    .filterTodosByStatus()
     .filterByPriority();
   await features.filterByTag();
 
@@ -49,8 +49,9 @@ exports.getCompletedTodos = catchAsync(async (req, res, next) => {
     .filter()
     .sort()
     .limitedFields()
+
     .paginate()
-    .filterByStatus()
+    .filterTodosByStatus()
     .filterByPriority();
   await features.filterByTag();
 

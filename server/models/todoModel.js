@@ -41,7 +41,7 @@ const todoSchema = new Schema(
 
     status: {
       type: String,
-      enum: ["pending", "today", "overdue"],
+      enum: ["pending", "today", "overdue", "completed"],
       default: "pending", // Default status
     },
   },

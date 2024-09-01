@@ -1,13 +1,13 @@
 // src/store/todo/todoSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { getInCompleteTodo, toggleTodoCompletion } from "./todoAction";
+import { getTodos, toggleTodoCompletion } from "./todoAction";
 
 const initialState = {
   todos: [],
   loading: false,
   error: null,
   toggleLoading: false, // Separate loading state for toggle
-  toggleError: null, // Separate error state for toggle
+  toggleError: null,
 };
 
 const todoSlice = createSlice({
@@ -16,16 +16,16 @@ const todoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getInCompleteTodo.pending, (state) => {
+      .addCase(getTodos.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getInCompleteTodo.fulfilled, (state, action) => {
+      .addCase(getTodos.fulfilled, (state, action) => {
         state.loading = false;
         state.todos = action.payload;
         state.error = null;
       })
-      .addCase(getInCompleteTodo.rejected, (state, action) => {
+      .addCase(getTodos.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

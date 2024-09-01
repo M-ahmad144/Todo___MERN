@@ -5,16 +5,13 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 /***   Redux Imports   ***/
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectGetInCompleteTodo,
+  selectGetTodos,
   selectLoading,
   selectError,
   selectToggleTodoCompletionLoading,
   selectToggleTodoCompletionError,
 } from "../../store/todo/todoSelectors";
-import {
-  getInCompleteTodo,
-  toggleTodoCompletion,
-} from "../../store/todo/todoAction";
+import { getTodos, toggleTodoCompletion } from "../../store/todo/todoAction";
 
 //  Component
 import CheckBox from "./CheckBox";
@@ -39,7 +36,7 @@ const TABLE_HEAD = ["Title", "Due Date", "Priority", "Actions"];
 
 const TodoTable = React.memo(() => {
   const dispatch = useDispatch();
-  const todos = useSelector(selectGetInCompleteTodo);
+  const todos = useSelector(selectGetTodos);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const toggleLoading = useSelector(selectToggleTodoCompletionLoading);
@@ -47,7 +44,7 @@ const TodoTable = React.memo(() => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(getInCompleteTodo());
+    dispatch(getTodos({}));
   }, [dispatch]);
 
   useEffect(() => {
