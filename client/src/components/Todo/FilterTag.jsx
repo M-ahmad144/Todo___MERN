@@ -1,22 +1,55 @@
-// File: FilterTag.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
-import "primereact/resources/primereact.min.css"; // PrimeReact CSS
+import "primereact/resources/primereact.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getTodos } from "../../store/todo/todoAction";
+import { toast } from "react-toastify";
+import { selectGetTodos } from "../../store/todo/todoSelectors";
 
-// Dummy data for tags - replace with your actual tags data
 const tags = [
   { name: "Work", code: "WRK" },
   { name: "Personal", code: "PRS" },
   { name: "Urgent", code: "URG" },
   { name: "Shopping", code: "SHP" },
   { name: "Fitness", code: "FIT" },
+  { name: "Study", code: "STY" },
+  { name: "Household", code: "HLD" },
+  { name: "Finance", code: "FIN" },
+  { name: "Travel", code: "TRV" },
+  { name: "Health", code: "HLT" },
+  { name: "Events", code: "EVT" },
+  { name: "Projects", code: "PRJ" },
 ];
 
 const FilterTag = () => {
   const [selectedTag, setSelectedTag] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (selectedTag) {
+      handleSelectedTag(selectedTag);
+    }
+  }, [selectedTag]);
+
+  const handleSelectedTag = async (tag) => {
+    const tagName = tag ? tag.name.toLowerCase() : null;
+
+    if (!tagName) return;
+
+    // Prepare filter options for dispatch
+    const filterOptions = { tag: tagName };
+
+    try {
+      // Dispatch the action with the filter options
+      await dispatch(getTodos(filterOptions)); // Assuming getTodos handles filtering on the backend
+    } catch (error) {
+      // Show a general error if fetching fails
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
 
   // Template for displaying the selected tag
-  const selectedTagTemplate = (option, props) => {
+  const selectedTagTemplate = (option) => {
     if (option) {
       return (
         <div className="flex items-center">
@@ -24,14 +57,13 @@ const FilterTag = () => {
         </div>
       );
     }
-    return <span>{props.placeholder}</span>;
+    return <span>Select a Tag</span>;
   };
 
   // Template for displaying each tag in the dropdown
   const tagItemTemplate = (option) => {
     return (
       <div className="flex items-center hover:bg-gray-100">
-        <div className="mr-2"></div>
         <span>{option.name}</span>
       </div>
     );

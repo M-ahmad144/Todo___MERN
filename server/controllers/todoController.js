@@ -49,7 +49,6 @@ exports.getCompletedTodos = catchAsync(async (req, res, next) => {
     .filter()
     .sort()
     .limitedFields()
-
     .paginate()
     .filterTodosByStatus()
     .filterByPriority();
@@ -78,9 +77,10 @@ exports.toggleTodoCompletion = catchAsync(async (req, res, next) => {
 
   // Toggle the completed status
   todo.completed = !todo.completed;
-
   // Save the updated todo
-  await todo.save();
+
+  //disable validation before save
+  todo.save({ validateBeforeSave: false });
 
   // Respond with the updated status
   res.status(200).json({
@@ -102,8 +102,7 @@ exports.getTodo = catchAsync(async (req, res, next) => {
 });
 
 exports.addTodo = catchAsync(async (req, res, next) => {
-  const { title, description, dueDate, priority, tag, status, completed } =
-    req.body;
+  const { title, dueDate, priority, tag, status, completed } = req.body;
 
   let tagId = null;
 
@@ -122,7 +121,6 @@ exports.addTodo = catchAsync(async (req, res, next) => {
 
   const todo = await Todo.create({
     title,
-    description,
     dueDate,
     priority,
     tag: tagId,
@@ -140,8 +138,7 @@ exports.addTodo = catchAsync(async (req, res, next) => {
 });
 
 exports.updateTodo = catchAsync(async (req, res, next) => {
-  const { title, description, dueDate, priority, tag, status, completed } =
-    req.body;
+  const { title, dueDate, priority, tag, status, completed } = req.body;
 
   // Find the todo by ID
   const todo = await Todo.findById(req.params.id);
@@ -170,7 +167,6 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
     req.params.id,
     {
       title: title || todo.title,
-      description: description || todo.description,
       dueDate: dueDate || todo.dueDate,
       priority: priority || todo.priority,
       tag: updatedTagId,

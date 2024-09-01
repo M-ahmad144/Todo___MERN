@@ -10,7 +10,7 @@ export const getTodos = createAsyncThunk(
       // Build the query string from the filters object
       const query = new URLSearchParams(filters).toString();
       const response = await axios.get(`/api/v1/todos/incomplete?${query}`);
-      console.log("query", query);
+      console.log("API Response:", response.data);
       if (response.status === 200) {
         return response.data.data.todos;
       }

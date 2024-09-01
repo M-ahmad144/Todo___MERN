@@ -65,14 +65,18 @@ const TodoTable = React.memo(() => {
   };
 
   const handleCheckboxChange = async (todoId, completed) => {
-    if (toggleLoading || loading) return; // Prevent updates if loading
-
     try {
       await dispatch(toggleTodoCompletion(todoId)).unwrap();
-      toast.success("Task Completed Successfully !!");
-      dispatch(getInCompleteTodo()); // Refresh todos to reflect changes
+
+      // Show success message based on the task's completed status
+      if (completed) {
+        toast.info("Task Marked as Incomplete!");
+      } else {
+        toast.success("Task Completed Successfully!");
+      }
+      dispatch(getTodos({}));
     } catch (error) {
-      toast.error("Failed to update todo status: " + error.message);
+      toast.error("Failed to toggle task status.");
     }
   };
 

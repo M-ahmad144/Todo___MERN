@@ -5,15 +5,10 @@ const todoSchema = new Schema(
   {
     title: {
       type: String,
-      unique: [true, "Title must be unique"],
+
       trim: true,
       required: [true, "Please add a title"],
       maxlength: [50, "Title cannot be more than 50 characters"],
-    },
-    description: {
-      type: String,
-      trim: true,
-      maxlength: [500, "Description cannot be more than 500 characters"],
     },
     completed: {
       type: Boolean,

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
 const AddTaskModal = ({ isOpen, onClose }) => {
+  const [addTodo, setTodo] = useState({
+    title: "",
+    dueDate: "",
+    priority: "Medium", //default priority
+    tag: "Work", //default tag
+  });
+
   // State to hold form values
   const [title, setTitle] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -89,10 +96,18 @@ const AddTaskModal = ({ isOpen, onClose }) => {
               onChange={(e) => setTag(e.target.value)}
               className="border-gray-300 bg-gray-100 p-3 border rounded focus:ring-2 focus:ring-gray-500 w-full text-gray-800 text-sm focus:outline-none transition"
             >
-              <option value="Work">Work</option>
-              <option value="Personal">Personal</option>
-              <option value="Urgent">Urgent</option>
-              <option value="Later">Later</option>
+              <option value="WRK">Work</option>
+              <option value="PRS">Personal</option>
+              <option value="URG">Urgent</option>
+              <option value="SHP">Shopping</option>
+              <option value="FIT">Fitness</option>
+              <option value="STY">Study</option>
+              <option value="HLD">Household</option>
+              <option value="FIN">Finance</option>
+              <option value="TRV">Travel</option>
+              <option value="HLT">Health</option>
+              <option value="EVT">Events</option>
+              <option value="PRJ">Projects</option>
             </select>
           </div>
 
