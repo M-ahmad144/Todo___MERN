@@ -5,14 +5,19 @@ import axios from "axios";
 // Get all Incomplete Todos with dynamic filters
 export const getTodos = createAsyncThunk(
   "todo/getTodos",
-  async (filters, { rejectWithValue }) => {
+  async ({ filters, page = 1, limit = 10 }, { rejectWithValue }) => {
     try {
-      // Build the query string from the filters object
-      const query = new URLSearchParams(filters).toString();
+      // Build the query string with pagination parameters
+      const query = new URLSearchParams({ ...filters, page, limit }).toString();
       const response = await axios.get(`/api/v1/todos/incomplete?${query}`);
-      console.log("API Response:", response.data);
       if (response.status === 200) {
-        return response.data.data.todos;
+        console.log("API Response:", response.data);
+        console.log("Total Pages:", response.data.totalPages);
+        console.log("Todos:", response.data.data.todos);
+        return {
+          todos: response.data.data.todos,
+          totalPages: response.data.totalPages,
+        };
       }
     } catch (error) {
       if (error.response && error.response.data.message) {

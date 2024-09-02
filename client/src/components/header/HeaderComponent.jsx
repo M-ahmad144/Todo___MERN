@@ -72,7 +72,7 @@ function Header() {
     <header className="flex justify-between items-center bg-white/20 shadow-lg p-4">
       {/* Logo Section */}
       <Link
-        to="#"
+        to="/home"
         className="flex items-center bg-gradient-to-r from-gray-900 via-gray-600 to-gray-500 hover:opacity-90 px-10 rounded-tl-full rounded-br-full h-10 font-bold text-white italic uppercase"
       >
         Todo App

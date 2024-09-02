@@ -29,12 +29,20 @@ exports.getInCompleteTodo = catchAsync(async (req, res, next) => {
     .filterByPriority();
   await features.filterByTag();
 
-  // Ensure the query is properly executed
+  // Get the total number of todos that match the filters
+  const totalTodos = await features.query.clone().countDocuments();
+
+  // Execute the query to get the todos for the current page
   const todos = await features.query.populate("tag"); // Populate tags if needed
+
+  // Calculate total pages
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const totalPages = Math.ceil(totalTodos / limit);
 
   res.status(200).json({
     status: "success",
     results: todos.length,
+    totalPages: totalPages, // Include totalPages in the response
     data: {
       todos,
     },

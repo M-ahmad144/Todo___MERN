@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   toggleLoading: false, // Separate loading state for toggle
   toggleError: null,
+  totalPages: 1,
 };
 
 const todoSlice = createSlice({
@@ -22,12 +23,12 @@ const todoSlice = createSlice({
       })
       .addCase(getTodos.fulfilled, (state, action) => {
         state.loading = false;
-        state.todos = action.payload;
-        state.error = null;
+        state.todos = action.payload.todos;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(getTodos.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(toggleTodoCompletion.pending, (state) => {
         state.toggleLoading = true; // Only set toggleLoading to true

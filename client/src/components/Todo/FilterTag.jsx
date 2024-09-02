@@ -4,7 +4,6 @@ import "primereact/resources/primereact.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getTodos } from "../../store/todo/todoAction";
 import { toast } from "react-toastify";
-import { selectGetTodos } from "../../store/todo/todoSelectors";
 
 const tags = [
   { name: "Work", code: "WRK" },

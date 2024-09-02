@@ -34,7 +34,7 @@ const TodoListHeader = memo(() => {
     }
 
     // Dispatch the action with the filter parameters
-    dispatch(getTodos(filterOptions));
+    dispatch(getTodos({ filters: filterOptions }));
   };
 
   // Open the modal to add tasks
