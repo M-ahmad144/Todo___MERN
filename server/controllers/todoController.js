@@ -30,7 +30,7 @@ exports.getInCompleteTodo = catchAsync(async (req, res, next) => {
   await features.filterByTag();
 
   // Get the total number of todos that match the filters
-  const totalTodos = await features.query.clone().countDocuments();
+  const totalTodos = await Todo.countDocuments({ user: req.user._id });
 
   // Execute the query to get the todos for the current page
   const todos = await features.query.populate("tag"); // Populate tags if needed
@@ -43,31 +43,6 @@ exports.getInCompleteTodo = catchAsync(async (req, res, next) => {
     status: "success",
     results: todos.length,
     totalPages: totalPages, // Include totalPages in the response
-    data: {
-      todos,
-    },
-  });
-});
-
-exports.getCompletedTodos = catchAsync(async (req, res, next) => {
-  const features = new QueryFeatures(
-    Todo.find({ user: req.user._id, completed: true }),
-    req.query
-  )
-    .filter()
-    .sort()
-    .limitedFields()
-    .paginate()
-    .filterTodosByStatus()
-    .filterByPriority();
-  await features.filterByTag();
-
-  // Ensure the query is properly executed
-  const todos = await features.query.populate("tag");
-
-  res.status(200).json({
-    status: "success",
-    results: todos.length,
     data: {
       todos,
     },
@@ -95,6 +70,31 @@ exports.toggleTodoCompletion = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       completed: todo.completed,
+    },
+  });
+});
+
+exports.getCompletedTodos = catchAsync(async (req, res, next) => {
+  const features = new QueryFeatures(
+    Todo.find({ user: req.user._id, completed: true }),
+    req.query
+  )
+    .filter()
+    .sort()
+    .limitedFields()
+    .paginate()
+    .filterTodosByStatus()
+    .filterByPriority();
+  await features.filterByTag();
+
+  // Ensure the query is properly executed
+  const todos = await features.query.populate("tag");
+
+  res.status(200).json({
+    status: "success",
+    results: todos.length,
+    data: {
+      todos,
     },
   });
 });
