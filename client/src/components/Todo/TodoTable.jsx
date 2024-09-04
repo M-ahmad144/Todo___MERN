@@ -1,5 +1,3 @@
-// src/components/TodoTable.js
-
 import React, { useState, useEffect, Suspense, lazy } from "react";
 
 /***   Redux Imports   ***/
@@ -82,7 +80,7 @@ const TodoTable = React.memo(() => {
 
   return (
     <CardBody className="flex-grow bg-transparent lg:mr-20 lg:ml-20 p-4 overflow-x-auto">
-      {loading || toggleLoading ? (
+      {loading || toggleLoading || !todos ? (
         <div className="flex justify-center items-center h-full">
           <TailSpin
             height="80"
@@ -138,7 +136,7 @@ const TodoTable = React.memo(() => {
                         style={{ color: "black" }}
                         className="font-semiBold"
                       >
-                        {todo.title}
+                        {todo.title || "Untitled"}
                       </Typography>
                       <CheckBox
                         checked={todo.completed}

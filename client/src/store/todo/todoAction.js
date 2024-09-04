@@ -13,7 +13,7 @@ export const getTodos = createAsyncThunk(
       if (response.status === 200) {
         console.log("API Response:", response.data);
         console.log("Total Pages:", response.data.totalPages);
-        console.log("Todos:", response.data.data.todos);
+
         return {
           todos: response.data.data.todos,
           totalPages: response.data.totalPages,
@@ -29,8 +29,26 @@ export const getTodos = createAsyncThunk(
   }
 );
 
-// Get all Completed Todos
+export const toggleTodoCompletion = createAsyncThunk(
+  "todo/toggleTodoCompletion",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`/api/v1/todos/${id}/toggle`);
+      if (response.status === 200) {
+        console.log("API Response:", response.data);
+        return response.data.data.todo;
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
 
+// Get all Completed Todos
 export const getCompletedTodo = createAsyncThunk(
   "todo/getCompletedTodo",
   async (_, { rejectWithValue }) => {
@@ -50,13 +68,13 @@ export const getCompletedTodo = createAsyncThunk(
   }
 );
 
-export const toggleTodoCompletion = createAsyncThunk(
-  "todo/toggleTodoCompletion",
-  async (id, { rejectWithValue }) => {
+export const addTodo = createAsyncThunk(
+  "todo/addTodo",
+  async (todo, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`/api/v1/todos/${id}/toggle`);
+      const response = await axios.post("/api/v1/todos/add", todo);
       if (response.status === 200) {
-        console.log("API Response:", response.data);
+        console.log("ADD todo API Response:", response.data);
         return response.data.data.todo;
       }
     } catch (error) {

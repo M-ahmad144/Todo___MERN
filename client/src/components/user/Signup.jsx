@@ -45,7 +45,7 @@ export default function Signup() {
         });
       })
       .catch(() => {
-        toast.error(error || "Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
       });
   };
 

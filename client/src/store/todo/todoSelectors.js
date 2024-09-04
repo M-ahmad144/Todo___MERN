@@ -4,6 +4,7 @@ export const selectGetTodos = (state) => state.todos.todos;
 export const selectTotalPages = (state) => state.todos.totalPages;
 
 export const selectLoading = (state) => state.todos.loading;
+
 export const selectToggleTodoCompletionLoading = (state) =>
   state.todos.toggleLoading;
 export const selectError = (state) => state.todos.error;

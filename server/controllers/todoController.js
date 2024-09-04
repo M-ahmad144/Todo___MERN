@@ -110,7 +110,7 @@ exports.getTodo = catchAsync(async (req, res, next) => {
 });
 
 exports.addTodo = catchAsync(async (req, res, next) => {
-  const { title, dueDate, priority, tag, status, completed } = req.body;
+  const { title, dueDate, priority, tag } = req.body;
 
   let tagId = null;
 
@@ -132,8 +132,6 @@ exports.addTodo = catchAsync(async (req, res, next) => {
     dueDate,
     priority,
     tag: tagId,
-    status,
-    completed,
     user: req.user._id,
   });
 

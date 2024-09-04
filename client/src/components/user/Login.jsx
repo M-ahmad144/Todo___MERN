@@ -39,7 +39,7 @@ export default function Login() {
         });
       })
       .catch(() => {
-        toast.error(err || "Something went wrong. Please try again.");
+        toast.error( "Something went wrong. Please try again.");
       });
   };
 

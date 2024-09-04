@@ -1,6 +1,6 @@
 // src/store/todo/todoSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { getTodos, toggleTodoCompletion } from "./todoAction";
+import { getTodos, toggleTodoCompletion, addTodo } from "./todoAction";
 
 const initialState = {
   todos: [],
@@ -27,6 +27,18 @@ const todoSlice = createSlice({
         state.totalPages = action.payload.totalPages;
       })
       .addCase(getTodos.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addTodo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addTodo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.todos = action.payload;
+      })
+      .addCase(addTodo.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

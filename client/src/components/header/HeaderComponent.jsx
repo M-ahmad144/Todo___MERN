@@ -47,7 +47,7 @@ function Header() {
   // Handle loading and error states
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error("Something went wrong. Please try again.");
     }
   }, [error]);
 

@@ -1,27 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { TailSpin } from "react-loader-spinner";
+import { addTodo, getTodos } from "../../store/todo/todoAction"; // Ensure getTodos is imported
+import { selectLoading } from "../../store/todo/todoSelectors";
+import { format } from "date-fns";
 
 const AddTaskModal = ({ isOpen, onClose }) => {
-  const [addTodo, setTodo] = useState({
+  const dispatch = useDispatch();
+  const loading = useSelector(selectLoading);
+
+  const [todo, setTodo] = useState({
     title: "",
     dueDate: "",
-    priority: "Medium", //default priority
-    tag: "Work", //default tag
+    priority: "medium",
+    tag: "work",
   });
 
-  // State to hold form values
-  const [title, setTitle] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState("Medium");
-  const [tag, setTag] = useState("Work");
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setTodo((prevData) => ({ ...prevData, [id]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ title, dueDate, priority, tag });
-    setTitle("");
-    setDueDate("");
-    setPriority("Medium");
-    setTag("Work");
-    onClose();
+
+    try {
+      const formattedDueDate = format(new Date(todo.dueDate), "yyyy-MM-dd");
+
+      dispatch(
+        addTodo({
+          ...todo,
+          dueDate: formattedDueDate,
+        })
+      ).unwrap();
+
+      // Fetch updated todos
+      dispatch(getTodos({}));
+
+      toast.success("Task added successfully");
+      onClose();
+    } catch (err) {
+      toast.error("Failed to add task");
+    }
   };
 
   if (!isOpen) return null;
@@ -30,8 +51,19 @@ const AddTaskModal = ({ isOpen, onClose }) => {
     <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-white shadow-2xl p-8 rounded-lg w-full max-w-md transform transition-all">
         <h3 className="mb-6 font-bold text-gray-800 text-xl">Add New Task</h3>
+
+        {loading && (
+          <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-70 rounded-lg">
+            <TailSpin
+              height="50"
+              width="50"
+              color="#4A90E2"
+              aria-label="loading"
+            />
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title Input */}
           <div>
             <label htmlFor="title" className="block mb-1 text-gray-800 text-sm">
               Title (required)
@@ -39,15 +71,14 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             <input
               type="text"
               id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={todo.title}
+              onChange={handleChange}
               className="border-gray-300 bg-gray-100 p-3 border rounded focus:ring-2 focus:ring-gray-500 w-full text-gray-800 text-sm placeholder-gray-400 focus:outline-none transition"
               placeholder="Enter task title"
               required
             />
           </div>
 
-          {/* Due Date Input */}
           <div>
             <label
               htmlFor="dueDate"
@@ -58,14 +89,13 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             <input
               type="date"
               id="dueDate"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              value={todo.dueDate}
+              onChange={handleChange}
               className="border-gray-300 bg-gray-100 p-3 border rounded focus:ring-2 focus:ring-gray-500 w-full text-gray-800 text-sm focus:outline-none transition"
               required
             />
           </div>
 
-          {/* Priority Dropdown */}
           <div>
             <label
               htmlFor="priority"
@@ -75,43 +105,41 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             </label>
             <select
               id="priority"
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              value={todo.priority}
+              onChange={handleChange}
               className="border-gray-300 bg-gray-100 p-3 border rounded focus:ring-2 focus:ring-gray-500 w-full text-gray-800 text-sm focus:outline-none transition"
             >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
             </select>
           </div>
 
-          {/* Tag Dropdown */}
           <div>
             <label htmlFor="tag" className="block mb-1 text-gray-800 text-sm">
               Tag
             </label>
             <select
               id="tag"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
+              value={todo.tag}
+              onChange={handleChange}
               className="border-gray-300 bg-gray-100 p-3 border rounded focus:ring-2 focus:ring-gray-500 w-full text-gray-800 text-sm focus:outline-none transition"
             >
-              <option value="WRK">Work</option>
-              <option value="PRS">Personal</option>
-              <option value="URG">Urgent</option>
-              <option value="SHP">Shopping</option>
-              <option value="FIT">Fitness</option>
-              <option value="STY">Study</option>
-              <option value="HLD">Household</option>
-              <option value="FIN">Finance</option>
-              <option value="TRV">Travel</option>
-              <option value="HLT">Health</option>
-              <option value="EVT">Events</option>
-              <option value="PRJ">Projects</option>
+              <option value="work">Work</option>
+              <option value="personal">Personal</option>
+              <option value="urgent">Urgent</option>
+              <option value="shopping">Shopping</option>
+              <option value="fitness">Fitness</option>
+              <option value="study">Study</option>
+              <option value="household">Household</option>
+              <option value="finance">Finance</option>
+              <option value="travel">Travel</option>
+              <option value="health">Health</option>
+              <option value="events">Events</option>
+              <option value="projects">Projects</option>
             </select>
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-end space-x-2">
             <button
               type="button"
