@@ -86,3 +86,21 @@ export const addTodo = createAsyncThunk(
     }
   }
 );
+
+export const deleteTodo = createAsyncThunk(
+  "todo/deleteTodo",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/api/v1/todos/delete/${id}`);
+      if (response.status === 204) {
+        console.log("delete successful", response, response.data);
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);

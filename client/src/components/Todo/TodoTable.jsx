@@ -9,7 +9,11 @@ import {
   selectToggleTodoCompletionLoading,
   selectToggleTodoCompletionError,
 } from "../../store/todo/todoSelectors";
-import { getTodos, toggleTodoCompletion } from "../../store/todo/todoAction";
+import {
+  getTodos,
+  toggleTodoCompletion,
+  deleteTodo,
+} from "../../store/todo/todoAction";
 
 //  Component
 import CheckBox from "./CheckBox";
@@ -76,6 +80,12 @@ const TodoTable = React.memo(() => {
     } catch (error) {
       toast.error("Failed to toggle task status.");
     }
+  };
+
+  const handleDeleteTask = (todoId) => {
+    dispatch(deleteTodo(todoId));
+    dispatch(getTodos({}));
+    toast.success("Task Deleted Successfully!");
   };
 
   return (
@@ -165,7 +175,7 @@ const TodoTable = React.memo(() => {
                           todo.priority === "high"
                             ? "red"
                             : todo.priority === "medium"
-                            ? "yellow"
+                            ? "purple"
                             : "green",
                       }}
                       className="font-semibold"
@@ -187,6 +197,7 @@ const TodoTable = React.memo(() => {
                       </Tooltip>
                       <Tooltip content="Delete Task">
                         <IconButton
+                          onClick={() => handleDeleteTask(todo._id)}
                           variant="text"
                           className="bg-transparent p-1 rounded-full text-red-600"
                         >

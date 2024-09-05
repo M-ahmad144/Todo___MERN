@@ -195,13 +195,10 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteTodo = catchAsync(async (req, res, next) => {
-  //(req.params.id present in database) {
-  if (await Todo.findById(req.params.id)) {
-    res.status(200).json({
-      status: "success",
-      message: "Todo deleted successfully",
-    });
-  }
+  await Todo.findByIdAndDelete(req.params.id);
 
-  errorHandler("Todo not found", 404);
+  res.status(204).json({
+    status: "success",
+    message: "Todo deleted successfully",
+  });
 });

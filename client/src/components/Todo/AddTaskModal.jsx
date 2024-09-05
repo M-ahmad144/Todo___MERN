@@ -21,7 +21,21 @@ const AddTaskModal = ({ isOpen, onClose }) => {
     const { id, value } = e.target;
     setTodo((prevData) => ({ ...prevData, [id]: value }));
   };
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
 
+    // Get the current date and format it as 'YYYY-MM-DD'
+    const today = new Date().toISOString().split("T")[0];
+
+    // Check if the due date is in the past
+    if (name === "dueDate" && value < today) {
+      toast.info("Due date cannot be in the past");
+      return;
+    }
+
+    // Update state if date is valid
+    setTodo({ ...todo, [name]: value });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -40,6 +54,13 @@ const AddTaskModal = ({ isOpen, onClose }) => {
 
       toast.success("Task added successfully");
       onClose();
+
+      setTodo({
+        title: "",
+        dueDate: "",
+        priority: "medium",
+        tag: "work",
+      });
     } catch (err) {
       toast.error("Failed to add task");
     }
@@ -89,10 +110,13 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             <input
               type="date"
               id="dueDate"
+              name="dueDate"
               value={todo.dueDate}
-              onChange={handleChange}
+              onChange={handleDateChange}
               className="border-gray-300 bg-gray-100 p-3 border rounded focus:ring-2 focus:ring-gray-500 w-full text-gray-800 text-sm focus:outline-none transition"
               required
+              // Disable past dates by setting the minimum value to today
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
 
