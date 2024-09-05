@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import "primereact/resources/primereact.min.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getTodos } from "../../store/todo/todoAction";
 import { toast } from "react-toastify";
 
 const tags = [
-  { name: "Work", code: "WRK" },
-  { name: "Personal", code: "PRS" },
-  { name: "Urgent", code: "URG" },
-  { name: "Shopping", code: "SHP" },
-  { name: "Fitness", code: "FIT" },
-  { name: "Study", code: "STY" },
-  { name: "Household", code: "HLD" },
-  { name: "Finance", code: "FIN" },
-  { name: "Travel", code: "TRV" },
-  { name: "Health", code: "HLT" },
-  { name: "Events", code: "EVT" },
-  { name: "Projects", code: "PRJ" },
+  { name: "work", code: "WRK" },
+  { name: "personal", code: "PRS" },
+  { name: "urgent", code: "URG" },
+  { name: "shopping", code: "SHP" },
+  { name: "fitness", code: "FIT" },
+  { name: "study", code: "STY" },
+  { name: "household", code: "HLD" },
+  { name: "finance", code: "FIN" },
+  { name: "travel", code: "TRV" },
+  { name: "health", code: "HLT" },
+  { name: "events", code: "EVT" },
+  { name: "projects", code: "PRJ" },
 ];
 
 const FilterTag = () => {
@@ -30,8 +30,8 @@ const FilterTag = () => {
     }
   }, [selectedTag]);
 
-  const handleSelectedTag = async (tag) => {
-    const tagName = tag ? tag.name.toLowerCase() : null;
+  const handleSelectedTag = (tag) => {
+    const tagName = tag?.name.toLowerCase();
 
     if (!tagName) return;
 
@@ -40,7 +40,7 @@ const FilterTag = () => {
 
     try {
       // Dispatch the action with the filter options
-      await dispatch(getTodos(filterOptions)); // Assuming getTodos handles filtering on the backend
+      dispatch(getTodos({ filters: filterOptions })); // Ensure getTodos handles the
     } catch (error) {
       // Show a general error if fetching fails
       toast.error("Something went wrong. Please try again.");

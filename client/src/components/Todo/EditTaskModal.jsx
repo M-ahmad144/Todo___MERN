@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+// EditTaskModal.js
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { TailSpin } from "react-loader-spinner";
-import { addTodo, getTodos } from "../../store/todo/todoAction";
+import { updateTodo, getTodos } from "../../store/todo/todoAction";
 import { selectLoading } from "../../store/todo/todoSelectors";
-import { format } from "date-fns";
 import TaskModal from "./TaskModal";
 
-const AddTaskModal = ({ isOpen, onClose }) => {
+const EditTaskModal = ({ isOpen, onClose, currentTodo }) => {
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
 
@@ -17,6 +16,21 @@ const AddTaskModal = ({ isOpen, onClose }) => {
     priority: "medium",
     tag: "work",
   });
+
+  // Populate the form with the current todo data when editing
+  useEffect(() => {
+    console.log("currentTodo in EditTaskModal useEffect:", currentTodo);
+    if (currentTodo) {
+      setTodo({
+        title: currentTodo.title || "",
+        dueDate: currentTodo.dueDate
+          ? new Date(currentTodo.dueDate).toISOString().split("T")[0]
+          : "",
+        priority: currentTodo.priority || "medium",
+        tag: currentTodo.tag || "work",
+      });
+    }
+  }, [currentTodo]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -36,29 +50,16 @@ const AddTaskModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formattedDueDate = format(new Date(todo.dueDate), "yyyy-MM-dd");
-      await dispatch(
-        addTodo({
-          ...todo,
-          dueDate: formattedDueDate,
-        })
-      ).unwrap();
+      await dispatch(updateTodo({ _id: currentTodo._id, ...todo })).unwrap();
+      console.log(todo);
       // Fetch updated todos
       dispatch(getTodos({}));
-      toast.success("Task added successfully");
+      toast.success("Task updated successfully");
       onClose();
-      setTodo({
-        title: "",
-        dueDate: "",
-        priority: "medium",
-        tag: "work",
-      });
     } catch (err) {
-      toast.error("Failed to add task");
+      toast.error("Failed to update task");
     }
   };
-
-  if (!isOpen) return null;
 
   return (
     <TaskModal
@@ -69,10 +70,9 @@ const AddTaskModal = ({ isOpen, onClose }) => {
       onDateChange={handleDateChange}
       onSubmit={handleSubmit}
       loading={loading}
-      actionLabel="Add"
-      min={new Date()}
+      actionLabel="Edit"
     />
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;

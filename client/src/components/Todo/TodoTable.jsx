@@ -1,6 +1,4 @@
 import React, { useState, useEffect, Suspense, lazy } from "react";
-
-/***   Redux Imports   ***/
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectGetTodos,
@@ -14,12 +12,7 @@ import {
   toggleTodoCompletion,
   deleteTodo,
 } from "../../store/todo/todoAction";
-
-//  Component
 import CheckBox from "./CheckBox";
-const AddTaskModal = lazy(() => import("./AddTaskModal"));
-
-/***  Material Tailwind Imports    ***/
 import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
 import {
@@ -34,6 +27,9 @@ import {
   ChevronUpDownIcon,
 } from "@heroicons/react/24/solid";
 
+// Lazy load the modal
+const EditTaskModal = lazy(() => import("./EditTaskModal"));
+
 const TABLE_HEAD = ["Title", "Due Date", "Priority", "Actions"];
 
 const TodoTable = React.memo(() => {
@@ -44,6 +40,7 @@ const TodoTable = React.memo(() => {
   const toggleLoading = useSelector(selectToggleTodoCompletionLoading);
   const toggleError = useSelector(selectToggleTodoCompletionError);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState(null); // State for the current task being edited
 
   useEffect(() => {
     dispatch(getTodos({}));
@@ -58,24 +55,25 @@ const TodoTable = React.memo(() => {
     }
   }, [toggleError, error]);
 
-  const handleEditTask = () => {
+  const handleEditTask = (todo) => {
+    setCurrentTodo(todo);
+    console.log(todo);
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
+    setCurrentTodo(null);
   };
 
   const handleCheckboxChange = async (todoId, completed) => {
     try {
       await dispatch(toggleTodoCompletion(todoId)).unwrap();
-
-      // Show success message based on the task's completed status
-      if (completed) {
-        toast.info("Task Marked as Incomplete!");
-      } else {
-        toast.success("Task Completed Successfully!");
-      }
+      toast.success(
+        completed
+          ? "Task Marked as Incomplete!"
+          : "Task Completed Successfully!"
+      );
       dispatch(getTodos({}));
     } catch (error) {
       toast.error("Failed to toggle task status.");
@@ -90,7 +88,7 @@ const TodoTable = React.memo(() => {
 
   return (
     <CardBody className="flex-grow bg-transparent lg:mr-20 lg:ml-20 p-4 overflow-x-auto">
-      {loading || toggleLoading || !todos ? (
+      {loading || toggleLoading ? (
         <div className="flex justify-center items-center h-full">
           <TailSpin
             height="80"
@@ -103,7 +101,6 @@ const TodoTable = React.memo(() => {
         </div>
       ) : (
         <table className="mt-4 w-full min-w-max text-left table-auto">
-          {/* Table header */}
           <thead>
             <tr>
               {TABLE_HEAD.map((head, index) => (
@@ -130,7 +127,6 @@ const TodoTable = React.memo(() => {
               ))}
             </tr>
           </thead>
-          {/* Table body */}
           <tbody>
             {todos && todos.length > 0 ? (
               todos.map((todo) => (
@@ -138,7 +134,6 @@ const TodoTable = React.memo(() => {
                   key={todo._id}
                   className="hover:bg-pink-800/20 transition-colors duration-200"
                 >
-                  {/* Title and Checkbox */}
                   <td className="border-purple-700 p-2 md:p-4 border-b font-sans md:font-semibold md:text-lg">
                     <div className="flex justify-between items-center gap-2">
                       <Typography
@@ -156,7 +151,6 @@ const TodoTable = React.memo(() => {
                       />
                     </div>
                   </td>
-                  {/* Due Date */}
                   <td className="border-gray-700 p-2 md:p-4 border-b">
                     <Typography variant="small" style={{ color: "black" }}>
                       {new Date(todo.dueDate).toLocaleDateString("en-US", {
@@ -166,7 +160,6 @@ const TodoTable = React.memo(() => {
                       })}
                     </Typography>
                   </td>
-                  {/* Priority */}
                   <td className="border-gray-700 p-2 md:p-4 border-b">
                     <Typography
                       variant="small"
@@ -183,12 +176,11 @@ const TodoTable = React.memo(() => {
                       {todo.priority}
                     </Typography>
                   </td>
-                  {/* Action */}
                   <td className="border-gray-700 p-2 border-b">
                     <div className="flex justify-center items-center gap-1 md:gap-10">
                       <Tooltip content="Edit Task">
                         <IconButton
-                          onClick={handleEditTask}
+                          onClick={() => handleEditTask(todo)}
                           variant="text"
                           className="bg-transparent p-4"
                         >
@@ -219,7 +211,13 @@ const TodoTable = React.memo(() => {
         </table>
       )}
       <Suspense fallback={<div>Loading...</div>}>
-        <AddTaskModal isOpen={isModalOpen} onClose={closeModal} />
+        {isModalOpen && currentTodo && (
+          <EditTaskModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            currentTodo={currentTodo}
+          />
+        )}
       </Suspense>
     </CardBody>
   );

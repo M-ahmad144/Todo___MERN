@@ -104,3 +104,25 @@ export const deleteTodo = createAsyncThunk(
     }
   }
 );
+
+export const updateTodo = createAsyncThunk(
+  "todo/updateTodo",
+  async (todo, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/todos/update/${todo._id}`,
+        todo
+      );
+      if (response.status === 200) {
+        console.log("update successful", response, response.data);
+        return response.data.data.todo;
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);

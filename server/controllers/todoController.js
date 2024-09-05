@@ -144,7 +144,7 @@ exports.addTodo = catchAsync(async (req, res, next) => {
 });
 
 exports.updateTodo = catchAsync(async (req, res, next) => {
-  const { title, dueDate, priority, tag, status, completed } = req.body;
+  const { title, dueDate, priority, tag } = req.body;
 
   // Find the todo by ID
   const todo = await Todo.findById(req.params.id);
@@ -158,11 +158,11 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
   let updatedTagId = todo.tag; // Default to the existing tag ID
 
   if (tag) {
-    let existingTag = await Tag.findOne({ name: tag.trim() });
+    let existingTag = await Tag.findOne({ name: tag });
 
     if (!existingTag) {
       // Create new tag if it does not exist
-      existingTag = await Tag.create({ name: tag.trim() });
+      existingTag = await Tag.create({ name: tag });
     }
 
     updatedTagId = existingTag._id;
@@ -176,8 +176,6 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
       dueDate: dueDate || todo.dueDate,
       priority: priority || todo.priority,
       tag: updatedTagId,
-      status: status || todo.status,
-      completed: completed !== undefined ? completed : todo.completed, // Handle boolean explicitly
     },
     {
       new: true, // Return the updated document
